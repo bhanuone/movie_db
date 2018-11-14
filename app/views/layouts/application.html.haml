@@ -1,0 +1,20 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title MovieDb
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  %body
+    %nav.navbar.navbar-inverse
+      .container-fluid
+        .navbar-header
+          %a.navbar-brand{:href => "/"} TV Series
+        %ul.nav.navbar-nav
+        = form_tag({controller: 'home', action: 'search'}, method: :get, class: 'navbar-form search-form') do
+          .form-group
+            = text_field_tag(:q, (params[:q] || ''), class: 'form-control', placeholder: 'Series name')
+          %button.btn.btn-default{:type => "submit"} Search
+    = yield

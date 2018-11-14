@@ -1,0 +1,6 @@
+.container-fluid
+  .col-lg-10.col-lg-offset-1
+    - if @series.any?
+      = render 'series_list', series_list: @series
+    - else
+      No results found
