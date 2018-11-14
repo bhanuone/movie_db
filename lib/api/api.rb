@@ -1,5 +1,6 @@
 class Api
-
+  include HTTParty
+  
   API_KEY = 'VGY0XIHVT52KD85J'
   USERNAME = 'bhanuone43s5n'
   USERKEY = 'T56RSXQAKX3F60F4'

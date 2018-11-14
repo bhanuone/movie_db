@@ -1,7 +1,5 @@
 class Search < Api
 
-  include HTTParty
-
   def call(search_term)
     # query = "name=#{URI::encode(search_term)}"
     # uri = URI("#{BASE_URL}/search/series")

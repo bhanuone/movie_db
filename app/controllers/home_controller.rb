@@ -4,11 +4,20 @@ class HomeController < ApplicationController
     @series = Series.all
   end
 
+  def episodes
+    api = Episodes.new
+    @seasons, @series_data = api.call(params[:id]) 
+  end
+
   def search
     if params[:q].present?
       api = Search.new
       results = api.call(params[:q]) 
-      @series = results['data'].map{|series_data| build_view_object(series_data)}
+      if results['data']
+        @series = results['data'].map{|series_data| build_view_object(series_data)}
+      else
+        @series = []
+      end
     else
       redirect_to request.referrer
     end

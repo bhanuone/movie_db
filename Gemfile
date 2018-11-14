@@ -74,3 +74,5 @@ gem "haml-rails", "~> 1.0"
 gem "pry", "~> 0.12.2"
 
 gem "httparty", "~> 0.16.3"
+
+gem "devise", "~> 4.5"

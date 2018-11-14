@@ -6,10 +6,10 @@ RSpec.describe Series, type: :model do
 
     before { @genre = Genre.create(name: 'Action') }
 
-    it 'should not be saved without a genre' do
-      series = Series.new(name: 'The Flash', genre_id: nil)
-      expect(series.save).to be_falsey
-    end
+    # it 'should not be saved without a genre' do
+    #   series = Series.new(name: 'The Flash', genre_id: nil)
+    #   expect(series.save).to be_falsey
+    # end
 
     it 'should not be saved without a name' do
       series = Series.new(name: '', genre_id: @genre.id)

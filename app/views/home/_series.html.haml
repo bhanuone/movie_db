@@ -1,3 +1,9 @@
 .panel.panel-default
-  .panel-heading= series.name
+  .panel-heading
+    = link_to series.name, url_for(controller: 'home', action: 'episodes', id: series.tvdb_id, only_path: true) 
+    - if series.status == 'Ended'
+      %span.label.label-danger= series.status
+    - else
+      %span.label.label-success= series.status
   .panel-body= (series.overview || 'Overview not available')
+    

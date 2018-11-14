@@ -1,0 +1,21 @@
+.container
+  .jumbotron
+    %h2= @series_data['seriesName']
+    %p= @series_data['overview']
+    %div Genre:
+    %div= @series_data['genre'].join(', ')
+
+  .row
+    %h3 Episodes
+  .row
+    .panel-group
+      - @seasons.each do |season, episodes|
+        .panel-default.panel
+          .panel-heading
+            %h4= link_to "Season #{season}", "#season#{season}", data: {toggle: 'collapse'}
+          .panel-collapse.collapse{id: "season#{season}"}
+            .panel-body
+              - episodes.each do |episode|
+                .panel.panel-default
+                  .panel-heading= "#{episode['airedEpisodeNumber']}. #{episode['episodeName']}"
+                  .panel-body= episode['overview']
