@@ -76,3 +76,7 @@ gem "pry", "~> 0.12.2"
 gem "httparty", "~> 0.16.3"
 
 gem "devise", "~> 4.5"
+
+gem "sidekiq", "~> 5.2"
+
+gem "sidekiq-cron", "~> 1.0"

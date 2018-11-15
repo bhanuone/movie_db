@@ -2,8 +2,16 @@
   .jumbotron
     %h2= @series_data['seriesName']
     %p= @series_data['overview']
-    %div Genre:
-    %div= @series_data['genre'].join(', ')
+    .row
+      .col-lg-6
+        %div 
+          %strong Genre:
+        %div= @series_data['genre'].join(', ')
+      .col-lg-6
+        - if @in_favorites
+          = link_to 'Remove from Favorites', remove_from_favorites_path(@series_data['id']), remote: true, method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger'
+        - else
+          = link_to 'Add to Favorites', add_to_favorites_path(@series_data['id']), remote: true, method: :post, class: 'btn btn-success'
 
   .row
     %h3 Episodes
@@ -16,6 +24,4 @@
           .panel-collapse.collapse{id: "season#{season}"}
             .panel-body
               - episodes.each do |episode|
-                .panel.panel-default
-                  .panel-heading= "#{episode['airedEpisodeNumber']}. #{episode['episodeName']}"
-                  .panel-body= episode['overview']
+                = render 'episode', episode: episode

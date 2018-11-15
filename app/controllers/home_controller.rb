@@ -1,12 +1,21 @@
 class HomeController < ApplicationController
+  
+  before_action :authenticate_user!, only: [:add_favorite, :remove_favorite]
 
   def index
-    @series = Series.all
+    if current_user
+      @series = Series.joins(:favorites).where(favorites: {user_id: current_user.id})
+    else
+      @series = Series.all
+    end
   end
 
   def episodes
     api = Episodes.new
     @seasons, @series_data = api.call(params[:id]) 
+    if current_user
+      @in_favorites = current_user.favorites.joins(:series).where(series: {tvdb_id: params[:id]}).first.present?
+    end
   end
 
   def search
@@ -14,7 +23,7 @@ class HomeController < ApplicationController
       api = Search.new
       results = api.call(params[:q]) 
       if results['data']
-        @series = results['data'].map{|series_data| build_view_object(series_data)}
+        @series = results['data'].map{|series_data| build_series_object(series_data)}
       else
         @series = []
       end
@@ -23,10 +32,20 @@ class HomeController < ApplicationController
     end
   end
 
-  def genre
+  def add_favorite
+    series = Series.find_or_create_by(tvdb_id: params[:tvdb_id])  
+    current_user.favorites.create(series_id: series.id)
+    render json: {}
   end
 
-  def build_view_object(series_data)
+  def remove_favorite
+    series = Series.find_or_create_by(tvdb_id: params[:tvdb_id])  
+    favorite = current_user.favorites.find_by(series_id: series.id)
+    favorite.destroy
+    render json: {}
+  end
+
+  def build_series_object(series_data)
     OpenStruct.new({
       name: series_data['seriesName'],
       status: series_data['status'],
@@ -36,4 +55,5 @@ class HomeController < ApplicationController
       first_aired: series_data['firstAired']
       })
   end
+
 end

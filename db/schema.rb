@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_13_105007) do
+ActiveRecord::Schema.define(version: 2018_11_14_103903) do
 
   create_table "episodes", force: :cascade do |t|
     t.string "title"
@@ -21,6 +21,15 @@ ActiveRecord::Schema.define(version: 2018_11_13_105007) do
     t.datetime "updated_at", null: false
     t.index ["season_id"], name: "index_episodes_on_season_id"
     t.index ["series_id"], name: "index_episodes_on_series_id"
+  end
+
+  create_table "favorites", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "series_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["series_id"], name: "index_favorites_on_series_id"
+    t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
   create_table "genres", force: :cascade do |t|
@@ -43,8 +52,22 @@ ActiveRecord::Schema.define(version: 2018_11_13_105007) do
     t.integer "tvdb_id"
     t.string "network"
     t.string "first_aired"
+    t.string "genre"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
 end

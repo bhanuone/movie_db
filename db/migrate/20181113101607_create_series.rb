@@ -9,6 +9,7 @@ class CreateSeries < ActiveRecord::Migration[5.2]
       t.integer :tvdb_id
       t.string :network 
       t.string :first_aired
+      t.string :genre, array: true
 
       t.timestamps
     end
