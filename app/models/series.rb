@@ -3,6 +3,8 @@ class Series < ApplicationRecord
   after_commit :update_remaining_data, on: :create
 
   has_many :favorites
+  has_many :users, through: :favorites
+  has_many :episodes
 
 
   def update_from_api_data(data)
@@ -17,7 +19,9 @@ class Series < ApplicationRecord
     })
   end
 
-
+  def has_new_episode?(updated_episodes_count)
+    self.episodes.count < updated_episodes_count
+  end
 
 
   private

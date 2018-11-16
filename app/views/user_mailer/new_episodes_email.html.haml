@@ -1,0 +1,22 @@
+%h2= "Hello #{@user.name},"
+
+%p Check out the new episodes released this week.
+
+%table
+  %tr
+    %th Series
+    %th Episode
+  - @series.each do |series|
+    %tr
+      %td= series.name
+      - episode = series.episodes.last
+      %td= "#{episode.title}(S#{'%02i' % episode.season.number}E#{'%02i' % episode.episode_number})"
+      
+:css
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 4px;
+  }

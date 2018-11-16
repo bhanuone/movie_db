@@ -1,8 +1,13 @@
 class Episodes < Api
   
+  attr_reader :fetch_episodes_only
+
+  def initialize(only_episodes: false)
+    @fetch_episodes_only = only_episodes   
+  end 
 
   def call(series_id)
-    series_data = fetch_series_data(series_id) 
+    series_data = (fetch_episodes_only ? nil : fetch_series_data(series_id))
     episodes = []
     episodes_data = fetch_episodes(series_id)
     episodes += episodes_data['data']

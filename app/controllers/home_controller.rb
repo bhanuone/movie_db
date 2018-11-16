@@ -34,7 +34,7 @@ class HomeController < ApplicationController
 
   def add_favorite
     series = Series.find_or_create_by(tvdb_id: params[:tvdb_id])  
-    current_user.favorites.create(series_id: series.id)
+    added_favorite = current_user.favorites.find_or_create_by(series_id: series.id)
     render json: {}
   end
 

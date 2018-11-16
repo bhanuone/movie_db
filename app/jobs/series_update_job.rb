@@ -13,7 +13,8 @@ class SeriesUpdateJob < ActiveJob::Base
           title: episode['episodeName'],
           air_date: episode['firstAired'],
           series_id: series.id,
-          season_id: season.id
+          season_id: season.id,
+          episode_number: episode['airedEpisodeNumber']
         }}
       )
     end
