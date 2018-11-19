@@ -1,22 +1,12 @@
 %h2= "Hello #{@user.name},"
 
-%p Check out the new episodes released this week.
+%p Check out the new episodes released today.
 
-%table
+%table{style: 'border: 1px solid black; border-collapse: collapse;'}
   %tr
-    %th Series
-    %th Episode
-  - @series.each do |series|
+    %th{style: 'border: 1px solid black; border-collapse: collapse; padding: 4px'} Series
+    %th{style: 'border: 1px solid black; border-collapse: collapse; padding: 4px'} Episode
+  - @data.each do |series, episode|
     %tr
-      %td= series.name
-      - episode = series.episodes.last
-      %td= "#{episode.title}(S#{'%02i' % episode.season.number}E#{'%02i' % episode.episode_number})"
-      
-:css
-  table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
-  }
-  th, td {
-    padding: 4px;
-  }
+      %td{style: 'border: 1px solid black; border-collapse: collapse; padding: 4px'}= series
+      %td{style: 'border: 1px solid black; border-collapse: collapse; padding: 4px'}= episode

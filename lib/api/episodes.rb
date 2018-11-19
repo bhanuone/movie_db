@@ -21,6 +21,10 @@ class Episodes < Api
     [seasons, series_data]
   end
 
+  def fetch_single_episode(tvdb_episode_id)
+    
+  end
+
   private
 
   def fetch_series_data(series_id)

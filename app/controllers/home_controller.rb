@@ -4,17 +4,33 @@ class HomeController < ApplicationController
 
   def index
     if current_user
-      @series = Series.joins(:favorites).where(favorites: {user_id: current_user.id})
+      @series = current_user.series
     else
       @series = Series.all
     end
   end
 
   def episodes
-    api = Episodes.new
-    @seasons, @series_data = api.call(params[:id]) 
+    @series = Series.find_by(tvdb_id: params[:id])
+    if @series.nil?
+      api = Episodes.new
+      seasons, series_data = api.call(params[:id])
+      @series = Series.new(name: series_data['seriesName'], overview: series_data['overview'], genre: series_data['genre'], tvdb_id: series_data['id'])
+      @seasons = seasons.map do |season, episodes|
+        [
+          season,
+          episodes.map {|episode| Episode.new({
+            episode_number: episode['airedEpisodeNumber'],
+            title: episode['episodeName'],
+            overview: episode['overview']
+          })}
+        ]
+      end
+    else
+      @seasons = @series.episodes.eager_load(:season).group_by {|ep| ep.season.number}.sort 
+    end
     if current_user
-      @in_favorites = current_user.favorites.joins(:series).where(series: {tvdb_id: params[:id]}).first.present?
+      @in_favorites = current_user.series.exists?(tvdb_id: params[:id])
     end
   end
 
@@ -23,7 +39,14 @@ class HomeController < ApplicationController
       api = Search.new
       results = api.call(params[:q]) 
       if results['data']
-        @series = results['data'].map{|series_data| build_series_object(series_data)}
+        @series = results['data'].map{|series_data| Series.new({
+                                                                  name: series_data['seriesName'],
+                                                                  status: series_data['status'],
+                                                                  overview: series_data['overview'],
+                                                                  tvdb_id: series_data['id'],
+                                                                  network: series_data['network'],
+                                                                  first_aired: series_data['firstAired']
+                                                                  })}
       else
         @series = []
       end
@@ -43,17 +66,6 @@ class HomeController < ApplicationController
     favorite = current_user.favorites.find_by(series_id: series.id)
     favorite.destroy
     render json: {}
-  end
-
-  def build_series_object(series_data)
-    OpenStruct.new({
-      name: series_data['seriesName'],
-      status: series_data['status'],
-      overview: series_data['overview'],
-      tvdb_id: series_data['id'],
-      network: series_data['network'],
-      first_aired: series_data['firstAired']
-      })
   end
 
 end

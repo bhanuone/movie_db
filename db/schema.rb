@@ -10,23 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_14_103903) do
+ActiveRecord::Schema.define(version: 2018_11_18_103958) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "episodes", force: :cascade do |t|
     t.string "title"
+    t.text "overview"
     t.date "air_date"
     t.integer "episode_number"
-    t.integer "series_id"
-    t.integer "season_id"
+    t.bigint "series_id"
+    t.bigint "season_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "tvdb_id"
     t.index ["season_id"], name: "index_episodes_on_season_id"
     t.index ["series_id"], name: "index_episodes_on_series_id"
   end
 
   create_table "favorites", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "series_id"
+    t.bigint "user_id"
+    t.bigint "series_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["series_id"], name: "index_favorites_on_series_id"
@@ -53,7 +58,7 @@ ActiveRecord::Schema.define(version: 2018_11_14_103903) do
     t.integer "tvdb_id"
     t.string "network"
     t.string "first_aired"
-    t.string "genre"
+    t.string "genre", array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -71,4 +76,8 @@ ActiveRecord::Schema.define(version: 2018_11_14_103903) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "episodes", "seasons"
+  add_foreign_key "episodes", "series"
+  add_foreign_key "favorites", "series"
+  add_foreign_key "favorites", "users"
 end

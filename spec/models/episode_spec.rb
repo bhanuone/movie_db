@@ -4,8 +4,7 @@ RSpec.describe Episode, type: :model do
 
   context 'When creating a new episode' do
     before do
-      @genre = Genre.create(name: 'Action')
-      @series = Series.create(name: 'The Flash(2014)', genre_id: @genre.id) 
+      @series = Series.create(name: 'The Flash(2014)') 
       @season = Season.create(name: 'Season 1', number: 1)
     end
 

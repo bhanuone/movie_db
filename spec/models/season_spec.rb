@@ -5,13 +5,12 @@ RSpec.describe Season, type: :model do
   context 'When creating a new Season' do
 
     before do
-      genre = Genre.create(name: 'Action')
-      series = Series.create(name: 'The Flash(2014)', genre_id: genre.id) 
+      series = Series.create(name: 'The Flash(2014)') 
     end
 
-    it 'should not be saved without a name' do
+    it 'should assign a name before saving' do
       season = Season.new(name: '', number: 1)
-      expect(season.save).to be_falsey
+      expect(season.save).to be_truthy
     end
 
     it 'should not be saved without a season number' do

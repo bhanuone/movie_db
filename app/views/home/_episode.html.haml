@@ -1,3 +1,4 @@
 .panel.panel-default
-  .panel-heading= "#{episode['airedEpisodeNumber']}. #{episode['episodeName']}"
-  .panel-body= episode['overview']
+  .panel-heading
+    %h4= "#{episode.episode_number}. #{episode.title} (#{episode.formated_air_date})"
+  .panel-body= episode.overview

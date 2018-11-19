@@ -1,4 +1,8 @@
-new_episode_notifier:
+new_episodes_updater:
   cron: "59 23 * * *"
   class: NewEpisodesJob
   queue: default
+new_episode_notifier:
+  cron: "59 23 * * *"
+  class: NotifierJob
+  queue: notifier

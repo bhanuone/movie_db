@@ -1,5 +1,6 @@
 class Season < ApplicationRecord
-  validates_presence_of :name, :number
+  validates_presence_of :name
+  validates_presence_of :number
 
   before_validation :set_season_name
 

@@ -2,6 +2,8 @@ class Series < ApplicationRecord
 
   after_commit :update_remaining_data, on: :create
 
+  validates_presence_of :tvdb_id
+
   has_many :favorites
   has_many :users, through: :favorites
   has_many :episodes
@@ -21,6 +23,11 @@ class Series < ApplicationRecord
 
   def has_new_episode?(updated_episodes_count)
     self.episodes.count < updated_episodes_count
+  end
+
+  def self.parse_api_data(api_data)
+    parsed_data = api_data
+    Series.new(parsed_data)
   end
 
 

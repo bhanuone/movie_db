@@ -1,9 +1,14 @@
 class UserMailer < ApplicationMailer
 
-  def new_episodes_email(user_id, series_ids)
+  def new_episodes_email(user)
     puts "Sending email"
-    @user = User.find(user_id)
-    @series = Series.where(id: series_ids)
-    mail(to: @user.email, subject: 'New episodes released this week')
+    @user = user
+    @data = {}
+    new_episode_series = user.series.joins(:episodes).where(episodes: {air_date: Date.today})
+    new_episode_series.find_each do |series|
+      todays_episode = series.episodes.todays_episodes.first
+      @data[series.name] = "#{todays_episode.title}(#{todays_episode.episode_code})"
+    end
+    mail(to: @user.email, subject: 'New episodes released today')
   end
 end
